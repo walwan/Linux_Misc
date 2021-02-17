@@ -5,8 +5,6 @@ alias df='df -h'                                                # Human-readable
 alias free='free -m'                                            # Show sizes in MB
 alias gitu='git add . && git commit && git push'
 
-alias ll='ls -lh'
-alias la='ls -ah'
 alias lla='ls -lah'
 
 alias du='du -h'
