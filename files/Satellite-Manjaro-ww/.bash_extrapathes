@@ -6,7 +6,7 @@ export PATH=$APP_RUN_SCRIPT_PATH:$PATH
 export XDG_CONFIG_HOME=$HOME/.config
 
 # Canvas-Syncer Path
-export PATH=/run/media/ww/Document/OneDrive/SJTU/JI/Canvas/Canvas-Syncer/Profiles/:$PATH
+export PATH=/run/media/ww/Document/OneDrive/Undergraduate/JI/Canvas/Canvas-Syncer/Profiles/:$PATH
 
 # aurpkgmgr PATH
 export PATH=/home/ww/WW/Misc/aurpkgmgr/:$PATH
