@@ -128,10 +128,6 @@ source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 ## Personal Settings
-# Proxy setting
-export http_proxy="http://127.0.0.1:7891/"
-export https_proxy="http://127.0.0.1:7891/"
-
 # Alias
 if [ -e $HOME/.bash_aliases ]; then
 	source $HOME/.bash_aliases
@@ -141,6 +137,9 @@ fi
 if [ -e $HOME/.bash_extrapathes ]; then
 	source $HOME/.bash_extrapathes
 fi
+
+# Proxy setting
+setproxy "NO_OUTPUT"
 
 ## Plugin zsh-autosuggestions
 # Configure zsh-autosuggestions

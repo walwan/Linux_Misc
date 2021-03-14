@@ -30,13 +30,50 @@ alias pkgsearch='pamac search'
 
 ## Functions
 unsetproxy(){
-	unset http_proxy
-	unset https_proxy
-	echo "HTTP proxy settings unset!"
+	PROXY_ENV=(	http_proxy
+				ftp_proxy
+				https_proxy
+				all_proxy
+				rsync_proxy
+				HTTP_PROXY
+				HTTPS_PROXY
+				FTP_PROXY
+				ALL_PROXY
+				RSYNC_PROXY)
+
+	for envar in $PROXY_ENV; do
+       unset $envar
+    done
+	
+	if test -z $1 || test $1 != "NO_OUTPUT"; then
+		echo "HTTP proxy settings unset!"
+	fi
 }
 
 setproxy(){
-	export http_proxy="http://127.0.0.1:7891/"
-	export https_proxy="http://127.0.0.1:7891/"
-	echo "HTTP proxy settings set!"
+	proxy_setting="http://127.0.0.1:7891/"
+	no_proxy_setting="localhost,127.0.0.1,LocalAddress,LocalDomain.com"
+
+	PROXY_ENV=(	http_proxy
+				ftp_proxy
+				https_proxy
+				all_proxy
+				rsync_proxy
+				HTTP_PROXY
+				HTTPS_PROXY
+				FTP_PROXY
+				ALL_PROXY
+				RSYNC_PROXY)
+
+   	for envar in $PROXY_ENV; do
+      	export $envar=$proxy_setting
+   	done
+
+	for envar in no_proxy NO_PROXY; do
+		export $envar=$no_proxy_setting
+	done
+
+	if test -z $1 || test $1 != "NO_OUTPUT"; then
+		echo "HTTP proxy settings set!"
+	fi
 }
