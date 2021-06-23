@@ -28,6 +28,17 @@ alias setgithubemail='git config --local user.email 11062281+walwan@users.norepl
 alias pkginfo='pacman -Qi'
 alias pkgsearch='pamac search'
 
+alias canvas='cd /run/media/ww/Document/OneDrive/Undergraduate/JI/Canvas/'
+
+alias poweroff='systemctl poweroff'
+alias shutdown='systemctl poweroff'
+alias halt='systemctl halt'
+alias reboot='systemctl reboot'
+alias sleep='systemctl suspend'
+alias suspend='systemctl suspend'
+alias hibernate='systemctl hibernate'
+alias hsleep='systemctl hybrid-sleep'
+
 ## Functions
 unsetproxy(){
 	PROXY_ENV=(	http_proxy
