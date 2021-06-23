@@ -1,0 +1,6 @@
+Host github.com
+	User	git
+	Hostname	github.com
+	Port	22
+	#Proxycommand	socat - PROXY:127.0.0.1:%h:%p,proxyport=7891
+	Proxycommand	socat - SOCKS4A:127.0.0.1:%h:%p,socksport=7890
