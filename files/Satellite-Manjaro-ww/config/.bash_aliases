@@ -39,6 +39,10 @@ alias suspend='systemctl suspend'
 alias hibernate='systemctl hibernate'
 alias hsleep='systemctl hybrid-sleep'
 
+# alias for screen display configuration
+alias scr_dorm_mon_on='kscreen-doctor output.HDMI-0.enable output.HDMI-0.position.0,0 output.LVDS.position.0,1080 output.HDMI-0.mode.99'
+alias scr_dorm_mon_off='kscreen-doctor output.HDMI-0.disable output.LVDS.position.0,0'
+
 ## Functions
 unsetproxy(){
 	PROXY_ENV=(	http_proxy
