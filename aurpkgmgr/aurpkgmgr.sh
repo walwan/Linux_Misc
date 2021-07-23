@@ -21,6 +21,11 @@ readonly cmdCleanPkg
 cmdChkDynPkgVer="chkdynpkgver"
 readonly cmdChkDynPkgVer
 
+cmdList=(   ${cmdSyncPkg}
+            ${cmdCleanPkg}
+            ${cmdChkDynPkgVer})
+readonly cmdList
+
 _processArg(){
     # Process arguments
     if test $# -eq 0; then
@@ -75,7 +80,18 @@ _askYesOrNo(){
 }
 
 _showHelp(){
-    printf "Usage: %s <command> [options]\n" ${scriptName}
+    printf "Usage: %s " ${scriptName}
+
+    cmdCnt=0
+    printf "<"
+    for cmd in ${cmdList[@]}; do
+        printf "%s" ${cmd}
+        ((cmdCnt++))
+        if test ${cmdCnt} -lt ${#cmdList[@]}; then
+            printf "/"
+        fi
+    done
+    printf "> [options]\n"
 }
 
 _syncPkg(){
