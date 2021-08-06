@@ -121,7 +121,7 @@ _syncPkg(){
     done
 }
 
-_cleanPkg(){
+_cleanOldPkg(){
     # Initialize variable
     numPkgClean=0
     pkgCleanPath=()
@@ -139,7 +139,7 @@ _cleanPkg(){
                 fi
 
                 # Parsing package name
-                PkgName=`LC_ALL=en pacman -Qip ${AURPkgDir}/${folder}/${file} | grep "Name" | sed "s/^Name[[:space:]]*:[[:space:]]//g"`
+                PkgName=`LC_ALL=en pacman -Qp ${AURPkgDir}/${folder}/${file} | sed "s/[[:space:]].*$//g"`
                 SubPkgIndex=0
                 if test ${#SubPkgName[@]} -eq 0; then
                     SubPkgName[${SubPkgIndex}]=${PkgName}
@@ -184,6 +184,68 @@ _cleanPkg(){
             done
             printf "Done Cleaning!\n"
         fi
+    fi
+}
+
+_cleanUninstalledPkg(){
+    # Initialize variable
+    numPkgClean=0
+    pkgCleanPath=()
+
+    for folder in `ls ${AURPkgDir}`; do
+        if test -d "${AURPkgDir}/${folder}"; then
+
+            for file in `ls -t ${AURPkgDir}/${folder}`; do
+                # Check valid package
+                ChkOutput=`echo ${file} | grep ".pkg.tar"`
+                if test -z ${ChkOutput}; then
+                    continue
+                fi
+
+                # Parsing package name
+                PkgName=`LC_ALL=en pacman -Qp ${AURPkgDir}/${folder}/${file} | sed "s/[[:space:]].*$//g"`
+                InstalledPkgName=`LC_ALL=en pacman -Q ${PkgName} 2>&1 | sed "s/[[:space:]].*$//g"`
+
+                if test "${InstalledPkgName}" != "${PkgName}"; then
+                    pkgCleanPath[${numPkgClean}]="${AURPkgDir}/${folder}/${file}"
+                    ((numPkgClean++))
+                fi
+
+            done
+        fi
+    done
+
+    # Output results
+    printf "%d package(s) to be cleaned:\n" ${numPkgClean}
+    if test ${numPkgClean} -gt 0; then
+        OutputCnt=1
+        for file in ${pkgCleanPath[@]}; do
+            printf "%d: %s\n" ${OutputCnt} ${file}
+            ((OutputCnt++))
+        done
+
+        printf "Start Cleaning?"
+        _askYesOrNo
+        if test $? -eq 1; then
+            for file in ${pkgCleanPath[@]}; do
+                rm -r ${file}
+            done
+            printf "Done Cleaning!\n"
+        fi
+    fi
+}
+
+_cleanPkg(){
+    printf "Clean uninstalled packages?"
+    _askYesOrNo
+    if test $? -eq 1; then
+        _cleanUninstalledPkg
+    fi
+
+    printf "Clean old packages?"
+    _askYesOrNo
+    if test $? -eq 1; then
+        _cleanOldPkg
     fi
 }
 
