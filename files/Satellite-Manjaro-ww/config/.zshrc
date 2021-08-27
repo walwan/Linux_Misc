@@ -139,7 +139,7 @@ if [ -e $HOME/.bash_extrapathes ]; then
 fi
 
 # Proxy setting
-setproxy "NO_OUTPUT"
+# setproxy "NO_OUTPUT"
 
 ## Plugin zsh-autosuggestions
 # Configure zsh-autosuggestions
