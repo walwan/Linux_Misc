@@ -40,8 +40,13 @@ alias hibernate='systemctl hibernate'
 alias hsleep='systemctl hybrid-sleep'
 
 # alias for screen display configuration
-alias scr_dorm_mon_on='kscreen-doctor output.HDMI-0.enable output.HDMI-0.position.0,0 output.LVDS.position.0,1080 output.HDMI-0.mode.99'
-alias scr_dorm_mon_off='kscreen-doctor output.HDMI-0.disable output.LVDS.position.0,0'
+## SJTU Dorm
+alias scr_sjtu_dorm_mon_on='kscreen-doctor output.HDMI-0.enable output.HDMI-0.position.0,0 output.LVDS.position.0,1080 output.HDMI-0.mode.99'
+alias scr_sjtu_dorm_mon_off='kscreen-doctor output.HDMI-0.disable output.LVDS.position.0,0'
+
+## TR
+alias scr_tr_mon_on='xrandr --output "HDMI-0" --auto --primary --mode 1920x1080 --rate 60 --left-of "LVDS"'
+alias scr_tr_mon_off='xrandr --output "LVDS" --primary --output "HDMI-0" --off'
 
 ## Functions
 unsetproxy(){
