@@ -16,3 +16,7 @@ export BILI=/home/ww/WW/Software/Bili/bili/
 
 # IPP Hardware and Sensor path
 export IPPHS=/run/media/ww/Document/OneDrive/SJTU/JI/Research_Project/IPP_with_CYA/Hardware_Sensor/
+
+# Canvas Path
+export UMCANVAS=/run/media/ww/Document/OneDrive/Undergraduate/UM/Academic/Canvas/
+export JICANVAS=/run/media/ww/Document/OneDrive/Undergraduate/JI/Canvas/
