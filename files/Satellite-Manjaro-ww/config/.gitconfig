@@ -5,5 +5,5 @@
 	name = ww
 	email = ww@Satellite.ww
 [core]
-	gitProxy = /home/ww/WW/Misc/gitproxy/gitproxy
+	#gitProxy = /home/ww/WW/Misc/gitproxy/gitproxy
 	editor = vim
