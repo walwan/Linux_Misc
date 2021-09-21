@@ -6,4 +6,4 @@
 	email = ww@Satellite.ww
 [core]
 	#gitProxy = /home/ww/WW/Misc/gitproxy/gitproxy
-	editor = vim
+	editor = nvim
