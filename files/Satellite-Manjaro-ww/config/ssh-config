@@ -2,6 +2,7 @@ Host github.com
 	User	git
 	Hostname	github.com
 	Port	22
+        IdentityFile ~/.ssh/id_ed25519
 	#Proxycommand	socat - PROXY:127.0.0.1:%h:%p,proxyport=7891
 	#Proxycommand	socat - SOCKS4A:127.0.0.1:%h:%p,socksport=7890
 
@@ -22,3 +23,9 @@ Host eecs201
 	Hostname peritia.eecs.umich.edu
 	User walwan
 	IdentityFile ~/.ssh/id_ed25519_eecs201
+
+Host gitlab.umich.edu
+        User git
+        Hostname gitlab.umich.edu
+        Port 22
+        IdentityFile ~/.ssh/id_ed25519_UM_gitlab
