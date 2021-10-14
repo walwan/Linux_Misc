@@ -10,6 +10,7 @@ alias lla='ls -lah'
 alias du='du -h'
 alias du1='du -h --max-depth=1'
 
+alias v='nvim'
 alias restronedrive='systemctl --user restart onedrive'
 alias stoponedrive='systemctl --user stop onedrive'
 # alias logonedrive='journalctl --user-unit=onedrive -f'
@@ -24,11 +25,14 @@ alias logsjtustuvpn='journalctl -b -f -u strongswan-starter.service'
 
 alias setgithubname='git config --local user.name walwan'
 alias setgithubemail='git config --local user.email 11062281+walwan@users.noreply.github.com'
+alias setumgitlabname='git config --local user.name "Walter W"'
+alias setumgitlabemail='git config --local user.email 5600-walwan@users.noreply.gitlab.umich.edu'
 
 alias pkginfo='pacman -Qi'
 alias pkgsearch='pamac search'
 
-alias canvas='cd /run/media/ww/Document/OneDrive/Undergraduate/JI/Canvas/'
+alias jicanvasfd='cd /run/media/ww/Document/OneDrive/Undergraduate/JI/Canvas/'
+alias umcanvasfd='cd /run/media/ww/Document/OneDrive/Undergraduate/UM/Academic/Canvas/'
 
 alias poweroff='systemctl poweroff'
 alias shutdown='systemctl poweroff'
