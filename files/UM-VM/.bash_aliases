@@ -10,3 +10,5 @@ alias du1='du -h --max-depth=1'
 
 alias setgithubname='git config --local user.name walwan'
 alias setgithubemail='git config --local user.email 11062281+walwan@users.noreply.github.com'
+alias setumgitlabname='git config --local user.name "Walter W"'
+alias setumgitlabemail='git config --local user.email 5600-walwan@users.noreply.gitlab.umich.edu'
