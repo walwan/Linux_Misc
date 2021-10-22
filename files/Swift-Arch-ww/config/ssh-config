@@ -1,0 +1,29 @@
+Host github.com
+	User	git
+	Hostname	github.com
+	Port	22
+        IdentityFile ~/.ssh/id_ed25519
+
+Host Termux
+	Hostname 10.10.0.212
+	Port 8022
+	User u0_a298
+	IdentityFile ~/.ssh/id_rsa_Termux
+
+Host caen login.engin.umich.edu
+        HostName login.engin.umich.edu
+        User walwan
+        ControlMaster auto
+        ControlPath ~/.ssh/_%r@%h:%p
+	ControlPersist 86400
+
+Host eecs201
+	Hostname peritia.eecs.umich.edu
+	User walwan
+	IdentityFile ~/.ssh/id_ed25519_eecs201
+
+Host gitlab.umich.edu
+        User git
+        Hostname gitlab.umich.edu
+        Port 22
+        IdentityFile ~/.ssh/id_ed25519_UM_gitlab
