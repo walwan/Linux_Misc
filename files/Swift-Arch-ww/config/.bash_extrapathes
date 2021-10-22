@@ -1,0 +1,22 @@
+# Protable App Run Script Path
+#export APP_RUN_SCRIPT_PATH=/home/ww/WW/Software/Run_Script/
+#export PATH=$APP_RUN_SCRIPT_PATH:$PATH
+
+# Fontconfig Home Path
+export XDG_CONFIG_HOME=$HOME/.config
+
+# Canvas-Syncer Path
+#export PATH=/home/ww/WW/Software/Canvas-Syncer/:/run/media/ww/Document/OneDrive/Undergraduate/UM/Academic/Canvas/Canvas-Syncer/Profiles/:/run/media/ww/Document/OneDrive/Undergraduate/JI/Canvas/Canvas-Syncer/Profiles/:$PATH
+
+# aurpkgmgr PATH
+export PATH=/home/ww/WW/Misc/aurpkgmgr/:$PATH
+
+# bili path
+#export BILI=/home/ww/WW/Software/Bili/bili/
+
+# IPP Hardware and Sensor path
+#export IPPHS=/run/media/ww/Document/OneDrive/SJTU/JI/Research_Project/IPP_with_CYA/Hardware_Sensor/
+
+# Canvas Path
+#export UMCANVAS=/run/media/ww/Document/OneDrive/Undergraduate/UM/Academic/Canvas/
+#export JICANVAS=/run/media/ww/Document/OneDrive/Undergraduate/JI/Canvas/
