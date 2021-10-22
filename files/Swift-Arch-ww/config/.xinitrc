@@ -1,0 +1,2 @@
+# start bspwm
+exec bspwm
