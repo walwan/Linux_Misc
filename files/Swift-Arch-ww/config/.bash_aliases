@@ -35,7 +35,8 @@ alias pkgsearch='yay -Ss'
 alias pkgsearchi='yay -Qs'
 alias checkpkgupdate='yay -Qu'
 
-#alias canvas='cd /run/media/ww/Document/OneDrive/Undergraduate/JI/Canvas/'
+alias jicanvasfd='cd /home/ww/Documents/OneDrive/Undergraduate/JI/Canvas/'
+alias umcanvasfd='cd /home/ww/Documents/OneDrive/Undergraduate/UM/Academic/Canvas/'
 
 alias poweroff='systemctl poweroff'
 alias shutdown='systemctl poweroff'
