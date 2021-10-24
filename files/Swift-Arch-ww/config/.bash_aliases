@@ -10,7 +10,9 @@ alias lla='ls -lah'
 alias du='du -h'
 alias du1='du -h --max-depth=1'
 
+# Personal aliases
 alias v='nvim'
+
 alias restronedrive='systemctl --user restart onedrive'
 alias stoponedrive='systemctl --user stop onedrive'
 # alias logonedrive='journalctl --user-unit=onedrive -f'
@@ -31,6 +33,7 @@ alias setumgitlabemail='git config --local user.email 5600-walwan@users.noreply.
 alias pkginfo='yay -Qi'
 alias pkgsearch='yay -Ss'
 alias pkgsearchi='yay -Qs'
+alias checkpkgupdate='yay -Qu'
 
 #alias canvas='cd /run/media/ww/Document/OneDrive/Undergraduate/JI/Canvas/'
 
