@@ -394,7 +394,7 @@ full-at = 98
 ; Default: 5
 poll-interval = 5
 
-format-charging = <ramp-capacity><label-charging>
+format-charging = <animation-charging><label-charging>
 format-charging-underline = #ffb52a
 
 format-discharging = <ramp-capacity><label-discharging>
@@ -416,11 +416,15 @@ ramp-capacity-8 = 󰂁
 ramp-capacity-9 = 󰂂
 ramp-capacity-foreground = ${colors.foreground-alt}
 
-animation-charging-0 = 
-animation-charging-1 = 
-animation-charging-2 = 
-animation-charging-3 = 
-animation-charging-4 = 
+animation-charging-0 = 󰁺
+animation-charging-1 = 󰁻
+animation-charging-2 = 󰁼
+animation-charging-3 = 󰁽
+animation-charging-4 = 󰁾
+animation-charging-5 = 󰁿
+animation-charging-6 = 󰂀
+animation-charging-7 = 󰂁
+animation-charging-8 = 󰂂
 animation-charging-foreground = ${colors.foreground-alt}
 animation-charging-framerate = 750
 
