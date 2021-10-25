@@ -46,7 +46,7 @@ border-size = 4
 border-color = #00000000
 
 padding-left = 0
-padding-right = 2
+padding-right = 1
 
 module-margin-left = 1
 module-margin-right = 2
@@ -60,7 +60,7 @@ modules-center =
 modules-right = filesystem memory cpu wlan battery temperature pulseaudio date powermenu
 
 tray-position = center
-tray-padding = 2
+tray-padding = 5
 ;tray-background = #0063ff
 ; Tray icon max size
 tray-maxsize = 64
@@ -493,7 +493,7 @@ screenchange-reload = true
 ;pseudo-transparency = false
 
 [global/wm]
-margin-top = 5
-margin-bottom = 5
+margin-top = 0
+margin-bottom = 0
 
 ; vim:ft=dosini
