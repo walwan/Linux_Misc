@@ -1,0 +1,31 @@
+#! /bin/sh
+
+# launch sxhkd
+pgrep -x sxhkd > /dev/null || sxhkd &
+
+# set wallpaper
+feh --no-fehbg --bg-scale /usr/share/pixmaps/wallpaper
+
+# configure desktops on multi monitors
+bspc monitor eDP -d I II III
+bspc monitor HDMI-A-0 -d IV V VI
+
+bspc config border_width         2
+bspc config window_gap          12
+
+bspc config split_ratio          0.52
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+
+bspc rule -a Gimp state=floating follow=on
+bspc rule -a Zathura state=tiled
+bspc rule -a Screenkey manage=off
+
+# launch compositor
+picom -b
+
+# launch polybar
+$HOME/.config/polybar/launch.sh
+
+# launch fcitx5
+fcitx5 &
