@@ -135,3 +135,20 @@ XF86MonBrightness{Up,Down}
 # lock screen
 ctrl + alt + l
 	xscreensaver-command -lock
+
+#
+# screenshot
+#
+
+# flameshot
+super + F1
+    shutter -s &
+
+super + F2
+    shutter -r &
+
+super + F3
+    flameshot gui &
+
+super + F4
+    shutter -w &
