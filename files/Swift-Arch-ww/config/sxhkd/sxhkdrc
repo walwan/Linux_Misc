@@ -152,3 +152,6 @@ super + F3
 
 super + F4
     shutter -w &
+
+F12
+    tdrop -ma -w 80% -h 75% -x 10% -s dropdown alacritty
