@@ -4,7 +4,7 @@
 pgrep -x sxhkd > /dev/null || sxhkd &
 
 # set wallpaper
-feh --no-fehbg --bg-scale /usr/share/pixmaps/wallpaper
+feh --no-fehbg --bg-fill /usr/share/pixmaps/wallpaper
 
 # configure desktops on multi monitors
 bspc monitor eDP -d I II III
