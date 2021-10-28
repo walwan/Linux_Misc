@@ -134,14 +134,14 @@ source $ZSH/oh-my-zsh.sh
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 ## Personal Settings
-# Alias
-if [ -e $HOME/.bash_aliases ]; then
-	source $HOME/.bash_aliases
-fi
-
 # PATH
 if [ -e $HOME/.bash_extrapathes ]; then
 	source $HOME/.bash_extrapathes
+fi
+
+# Alias
+if [ -e $HOME/.bash_aliases ]; then
+	source $HOME/.bash_aliases
 fi
 
 # Proxy setting
