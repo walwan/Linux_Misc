@@ -1,0 +1,32 @@
+#!/bin/bash
+
+connect(){
+    nm-applet    2>&1 > /dev/null &
+
+    while true; do
+        wifiStatus=$(nmcli d show wlp3s0 | grep "GENERAL.STATE" | grep "connected")
+        if test -n "${wifiStatus}"; then
+            break
+        fi
+        sleep 10
+    done
+
+    if test "$1" = "autoexit"; then
+        killNMApplet
+    fi
+}
+
+killNMApplet(){
+    killall nm-applet
+}
+
+case $1 in
+    "connect") connect "autoexit"
+	;;
+    "kill") killNMApplet
+	;;
+    *) connect
+	;;
+    "help") showHelp
+	;;
+esac
