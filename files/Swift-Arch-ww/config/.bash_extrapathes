@@ -8,8 +8,14 @@ export XDG_CONFIG_HOME=$HOME/.config
 # Canvas-Syncer Path
 #export PATH=/home/ww/WW/Software/Canvas-Syncer/:/run/media/ww/Document/OneDrive/Undergraduate/UM/Academic/Canvas/Canvas-Syncer/Profiles/:/run/media/ww/Document/OneDrive/Undergraduate/JI/Canvas/Canvas-Syncer/Profiles/:$PATH
 
-# aurpkgmgr PATH
-export PATH=/home/ww/WW/Misc/aurpkgmgr/:$PATH
+## Misc scripts PATH
+export MICSPATH=/home/ww/WW/Misc/
+export PATH=${MICSPATH}:$PATH
+for subfolder in $(ls $MICSPATH); do
+    if test -d "${MICSPATH}/${subfolder}"; then
+        export PATH=${MICSPATH}/${subfolder}/:$PATH
+    fi
+done
 
 # bili path
 #export BILI=/home/ww/WW/Software/Bili/bili/
