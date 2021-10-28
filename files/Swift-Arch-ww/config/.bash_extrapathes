@@ -18,5 +18,5 @@ export PATH=/home/ww/WW/Misc/aurpkgmgr/:$PATH
 #export IPPHS=/run/media/ww/Document/OneDrive/SJTU/JI/Research_Project/IPP_with_CYA/Hardware_Sensor/
 
 # Canvas Path
-#export UMCANVAS=/run/media/ww/Document/OneDrive/Undergraduate/UM/Academic/Canvas/
-#export JICANVAS=/run/media/ww/Document/OneDrive/Undergraduate/JI/Canvas/
+export UMCANVAS=/home/ww/Documents/OneDrive/Undergraduate/UM/Academic/Canvas/
+export JICANVAS=/home/ww/Documents/OneDrive/Undergraduate/JI/Canvas/
