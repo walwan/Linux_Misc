@@ -31,8 +31,8 @@ feh --no-fehbg --bg-fill /usr/share/pixmaps/wallpaper
 # launch polybar
 $HOME/.config/polybar/launch.sh
 
-# launch fcitx5
-fcitx5 &
+# XDG autostart
+systemctl --user start autostart.target
 
-# launch nm-applet for wireless connection
+# wireless auto-connection
 $HOME/WW/Misc/nmgui/nmgui connect
