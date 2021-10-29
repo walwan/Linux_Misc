@@ -25,6 +25,9 @@ picom -b
 # set wallpaper
 feh --no-fehbg --bg-fill /usr/share/pixmaps/wallpaper
 
+# launch dunst
+/usr/bin/dunst &
+
 # launch polybar
 $HOME/.config/polybar/launch.sh
 
