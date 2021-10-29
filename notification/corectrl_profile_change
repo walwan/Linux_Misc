@@ -1,0 +1,13 @@
+#!/bin/bash
+
+case $1 in
+    "powersaving")
+        dunstify -a Corectl -I /usr/share/icons/hicolor/24x24/apps/corectrl.svg "Switching to Power Saving Mode!"
+        ;;
+    "normal")
+        dunstify -a Corectl -I /usr/share/icons/hicolor/24x24/apps/corectrl.svg "Switching to Normal Mode!"
+        ;;
+    "performance")
+        dunstify -a Corectl -I /usr/share/icons/hicolor/24x24/apps/corectrl.svg "Switching to Performance Mode!"
+        ;;
+esac
