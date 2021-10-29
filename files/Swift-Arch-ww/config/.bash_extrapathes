@@ -9,7 +9,7 @@ export PATH=$HOME/.local/bin/:$PATH
 export XDG_CONFIG_HOME=$HOME/.config
 
 # Canvas-Syncer Path
-#export PATH=/home/ww/WW/Software/Canvas-Syncer/:/run/media/ww/Document/OneDrive/Undergraduate/UM/Academic/Canvas/Canvas-Syncer/Profiles/:/run/media/ww/Document/OneDrive/Undergraduate/JI/Canvas/Canvas-Syncer/Profiles/:$PATH
+export PATH=$HOME/Documents/OneDrive/Undergraduate/UM/Academic/Canvas/Canvas-Syncer/Profiles/:$HOME/Documents/OneDrive/Undergraduate/JI/Canvas/Canvas-Syncer/Profiles/:$PATH
 
 ## Misc scripts PATH
 export MICSPATH=/home/ww/WW/Misc/
