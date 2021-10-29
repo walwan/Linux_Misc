@@ -1,5 +1,5 @@
 # XScreenSaver Preferences File
-# Written by xscreensaver-settings 6.02 for ww on Fri Oct 22 16:32:16 2021.
+# Written by xscreensaver-settings 6.02 for ww on Thu Oct 28 13:06:49 2021.
 # https://www.jwz.org/xscreensaver/
 
 timeout:	0:10:00
@@ -120,7 +120,7 @@ programs:								      \
 				petri -root				    \n\
 				phosphor -root				    \n\
   GL: 				pulsar -root				    \n\
-				ripples -root				    \n\
+				ripples -root -duration 600		    \n\
 				shadebobs -root				    \n\
   GL: 				sierpinski3d -root			    \n\
 				spotlight -root				    \n\
