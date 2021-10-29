@@ -27,9 +27,7 @@ waitUntil(){
 }
 
 connect(){
-    waitUntil start /usr/bin/gnome-keyring-daemon
-    nm-applet 2>&1 > /dev/null &
-    #nm-applet 1>&2 &
+    waitUntil start /usr/bin/nm-applet
     sleep 5
     nmcli device connect $1 2>&1 > /dev/null
     sleep 10
