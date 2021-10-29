@@ -32,4 +32,4 @@ $HOME/.config/polybar/launch.sh
 fcitx5 &
 
 # launch nm-applet for wireless connection
-nmgui connect &
+$HOME/WW/Misc/nmgui/nmgui connect

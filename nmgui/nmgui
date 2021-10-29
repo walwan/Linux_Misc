@@ -1,19 +1,59 @@
 #!/bin/bash
 
-connect(){
-    nm-applet    2>&1 > /dev/null &
+waitUntil(){
+    if test $# -gt 2; then
+        sleepTime=$3
+    else
+        sleepTime=5
+    fi
 
     while true; do
-        wifiStatus=$(nmcli d show wlp3s0 | grep "GENERAL.STATE" | grep "connected")
+        progProcess=$(ps ux | tail -n +2 | awk '{print $11}' | grep "$2")
+        case $1 in
+            "start")
+                if test -n "${progProcess}"; then
+                    break
+                fi
+            ;;
+            "stop")
+                if test -z "${progProcess}"; then
+                    break
+                fi
+            ;;
+        esac
+
+        sleep $sleepTime
+    done
+}
+
+connect(){
+    waitUntil start /usr/bin/gnome-keyring-daemon
+    nm-applet 2>&1 > /dev/null &
+    #nm-applet 1>&2 &
+    sleep 5
+    nmcli device connect $1 2>&1 > /dev/null
+    sleep 10
+
+    while true; do
+        wifiStatus=$(nmcli d show $1 | grep "GENERAL.STATE" | grep "100 (connected)")
         if test -n "${wifiStatus}"; then
             break
         fi
-        sleep 10
+        sleep 60
     done
 
-    if test "$1" = "autoexit"; then
+    if test "$2" = "autoexit"; then
         killNMApplet
     fi
+}
+
+edit(){
+    nm-applet 2>&1 > /dev/null &
+    nm-connection-editor 2>&1 > /dev/null &
+
+    waitUntil stop nm-connection-editor 60
+
+    killNMApplet
 }
 
 killNMApplet(){
@@ -21,12 +61,14 @@ killNMApplet(){
 }
 
 case $1 in
-    "connect") connect "autoexit"
+    "connect") connect wlp3s0 autoexit &
 	;;
-    "kill") killNMApplet
+    "edit") edit &
 	;;
-    *) connect
+    "kill") killNMApplet &
 	;;
     "help") showHelp
+	;;
+    *) connect wlp3s0 &
 	;;
 esac
