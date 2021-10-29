@@ -1,3 +1,6 @@
+# ~/.local/bin
+export PATH=$HOME/.local/bin/:$PATH
+
 # Protable App Run Script Path
 #export APP_RUN_SCRIPT_PATH=/home/ww/WW/Software/Run_Script/
 #export PATH=$APP_RUN_SCRIPT_PATH:$PATH
