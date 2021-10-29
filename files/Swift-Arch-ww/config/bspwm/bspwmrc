@@ -1,11 +1,5 @@
 #! /bin/sh
 
-# launch sxhkd
-pgrep -x sxhkd > /dev/null || sxhkd &
-
-# set wallpaper
-feh --no-fehbg --bg-fill /usr/share/pixmaps/wallpaper
-
 # configure desktops on multi monitors
 bspc monitor eDP -d I II III
 bspc monitor DisplayPort-0 -d IV V VI
@@ -22,8 +16,14 @@ bspc rule -a Gimp state=floating follow=on
 bspc rule -a Zathura state=tiled
 bspc rule -a Screenkey manage=off
 
+# launch sxhkd
+pgrep -x sxhkd > /dev/null || sxhkd &
+
 # launch compositor
 picom -b
+
+# set wallpaper
+feh --no-fehbg --bg-fill /usr/share/pixmaps/wallpaper
 
 # launch polybar
 $HOME/.config/polybar/launch.sh
