@@ -1,30 +1,35 @@
 #!/bin/bash
 
 checkProcess(){
-    if test $# -gt 0; then
+    if [[ $# -gt 0 ]]; then
         echo "$(ps ux | tail -n +2 | awk '{print $11}' | grep "$1")"
     fi
 }
 
+checkConnect(){
+    if [[ $# -gt 0 ]]; then
+        echo "$(nmcli d show $1 | grep "GENERAL.STATE" | grep "100 (connected)")"
+    fi
+}
+
 waitUntil(){
-    if test $# -gt 2; then
+    if [[ $# -gt 2 ]]; then
         sleepTime=$3
     else
         sleepTime=5
     fi
 
     while true; do
-        progProcess=$(checkProcess "$2")
         case $1 in
             "start")
-                if test -n "${progProcess}"; then
-                    echo "program started"
+                if [[ -n "$(checkProcess "$2")" ]]; then
+                    #echo "program started"
                     break
                 fi
             ;;
             "stop")
-                if test -z "${progProcess}"; then
-                    echo "program stopped"
+                if [[ -z "$(checkProcess "$2")" ]]; then
+                    #echo "program stopped"
                     break
                 fi
             ;;
@@ -35,27 +40,30 @@ waitUntil(){
 }
 
 connect(){
-    if test -z "$(checkProcess nm-applet)"; then
+    if [[ $2 == "autoexit" && -n "$(checkConnect $1)" ]]; then
+        return
+    fi
+
+    if [[ -z "$(checkProcess nm-applet)" ]]; then
         nm-applet 2>&1 > /dev/null &
     fi
 
     waitUntil start nm-applet
     sleep 5
 
-    if test "$2" = "autoexit"; then
+    if [[ "$2" = "autoexit" ]]; then
         nmcli device connect $1 2>&1 > /dev/null
         sleep 10
     fi
 
     while true; do
-        wifiStatus=$(nmcli d show $1 | grep "GENERAL.STATE" | grep "100 (connected)")
-        if test -n "${wifiStatus}"; then
+        if [[ -n "$(checkConnect $1)" ]]; then
             break
         fi
         sleep 60
     done
 
-    if test "$2" = "autoexit"; then
+    if [[ "$2" = "autoexit" ]]; then
         killNMApplet
     fi
 }
