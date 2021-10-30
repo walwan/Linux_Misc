@@ -1,5 +1,11 @@
 #!/bin/bash
 
+checkProcess(){
+    if test $# -gt 0; then
+        echo "$(ps ux | tail -n +2 | awk '{print $11}' | grep "$1")"
+    fi
+}
+
 waitUntil(){
     if test $# -gt 2; then
         sleepTime=$3
@@ -8,15 +14,17 @@ waitUntil(){
     fi
 
     while true; do
-        progProcess=$(ps ux | tail -n +2 | awk '{print $11}' | grep "$2")
+        progProcess=$(checkProcess "$2")
         case $1 in
             "start")
                 if test -n "${progProcess}"; then
+                    echo "program started"
                     break
                 fi
             ;;
             "stop")
                 if test -z "${progProcess}"; then
+                    echo "program stopped"
                     break
                 fi
             ;;
@@ -27,10 +35,17 @@ waitUntil(){
 }
 
 connect(){
-    waitUntil start /usr/bin/nm-applet
+    if test -z "$(checkProcess nm-applet)"; then
+        nm-applet 2>&1 > /dev/null &
+    fi
+
+    waitUntil start nm-applet
     sleep 5
-    nmcli device connect $1 2>&1 > /dev/null
-    sleep 10
+
+    if test "$2" = "autoexit"; then
+        nmcli device connect $1 2>&1 > /dev/null
+        sleep 10
+    fi
 
     while true; do
         wifiStatus=$(nmcli d show $1 | grep "GENERAL.STATE" | grep "100 (connected)")
