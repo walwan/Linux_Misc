@@ -1,0 +1,8 @@
+0: for firmware version check
+1: for bios settings check
+2: for hardware optional roms
+3: for roms firmware data
+-4: no need because secure boot enfored it
+5: partition table
+7: secure boot state
+8: kernel cmdline
