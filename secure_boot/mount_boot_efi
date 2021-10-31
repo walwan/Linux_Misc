@@ -1,0 +1,22 @@
+#!/bin/bash
+
+mountPart(){
+    sudo cryptsetup open /dev/nvme0n1p2 cryptboot
+    sudo mount /dev/mapper/cryptboot /boot
+    sudo mount /dev/nvme0n1p1 /efi
+}
+
+umountPart(){
+    sudo umount /boot
+    sudo cryptsetup close /dev/mapper/cryptboot
+    sudo umount /efi
+}
+
+case $1 in
+    "mount") mountPart
+	;;
+    "umount") umountPart
+	;;
+    *) showHelp
+	;;
+esac

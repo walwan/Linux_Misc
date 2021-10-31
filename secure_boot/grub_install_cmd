@@ -1,0 +1,1 @@
+grub-install --modules=tpm --disable-shim-lock --target=x86_64-efi --efi-directory=/efi --bootloader-id=GRUB
