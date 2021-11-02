@@ -1,5 +1,5 @@
 # XScreenSaver Preferences File
-# Written by xscreensaver-settings 6.02 for ww on Thu Oct 28 13:06:49 2021.
+# Written by xscreensaver-settings 6.02 for ww on Sun Oct 31 18:42:52 2021.
 # https://www.jwz.org/xscreensaver/
 
 timeout:	0:10:00
@@ -27,7 +27,7 @@ dpmsOff:	1:00:00
 grabDesktopImages:  False
 grabVideoFrames:    False
 chooseRandomImages: True
-imageDirectory:	/home/ww/Pictures/Wallpaper
+imageDirectory:	/usr/share/pixmaps/wallpaper
 
 mode:		one
 selected:	80
@@ -120,7 +120,8 @@ programs:								      \
 				petri -root				    \n\
 				phosphor -root				    \n\
   GL: 				pulsar -root				    \n\
-				ripples -root -duration 600		    \n\
+				ripples -root -duration 600 -rate 100	      \
+				  -fluidity 8				    \n\
 				shadebobs -root				    \n\
   GL: 				sierpinski3d -root			    \n\
 				spotlight -root				    \n\
