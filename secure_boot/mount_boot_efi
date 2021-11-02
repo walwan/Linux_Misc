@@ -12,10 +12,19 @@ umountPart(){
     sudo umount /efi
 }
 
+verify(){
+    echo "Contents of /efi:"
+    ls -la /efi
+    echo -e "\nContents of /boot:"
+    ls -la /boot
+}
+
 case $1 in
     "mount") mountPart
 	;;
     "umount") umountPart
+	;;
+    "verify") verify
 	;;
     *) showHelp
 	;;
