@@ -144,6 +144,9 @@ if [ -e $HOME/.bash_aliases ]; then
 	source $HOME/.bash_aliases
 fi
 
+# Perl modules
+eval "$(perl -I$HOME/.perl/lib/perl5 -Mlocal::lib=$HOME/.perl)"
+
 # Proxy setting
 # setproxy "NO_OUTPUT"
 
