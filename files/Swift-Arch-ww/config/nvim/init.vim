@@ -10,6 +10,7 @@ set number
 call plug#begin(stdpath('data') . '/plugged')
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'tpope/vim-surround'
 
 " Initialize plugin system
 call plug#end()
