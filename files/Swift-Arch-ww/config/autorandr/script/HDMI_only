@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# temporarily create a desktop named "Desktop"
+bspc monitor DisplayPort-0 -a Desktop
+
+# assign desktops to monitors evenlly
+# assign from left to right
+bspc desktop I -m HDMI-A-0
+bspc desktop II -m HDMI-A-0
+bspc desktop III -m HDMI-A-0
+bspc desktop IV -m HDMI-A-0
+bspc desktop V -m HDMI-A-0
+bspc desktop VI -m eDP
+bspc desktop VII -m eDP
+bspc desktop VIII -m eDP
+bspc desktop IX -m eDP
+bspc desktop X -m eDP
+
+# delete unused monitors
+bspc monitor DisplayPort-0 -r &>/dev/null

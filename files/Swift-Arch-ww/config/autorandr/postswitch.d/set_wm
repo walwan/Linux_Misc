@@ -1,0 +1,40 @@
+#!/bin/bash
+
+IFS=':' read -a monitors <<< "${AUTORANDR_MONITORS}"
+configFolder="$(dirname ${AUTORANDR_PROFILE_FOLDER})"
+#dunstify ${#monitors[@]}
+
+case ${#monitors[@]} in
+    1)
+        ${configFolder}/script/eDP
+        primaryMonitor="eDP"
+        ;;
+    2)
+        for monitorName in "${monitors[@]}"; do
+            if [[ ${monitorName} == "eDP" ]]; then
+                continue
+            fi
+            connectedMonitor="${monitorName}"
+        done
+        #dunstify ${connectedMonitor}
+
+        case ${connectedMonitor} in
+            "HDMI-A-0")
+                ${configFolder}/script/HDMI_only
+                primaryMonitor="HDMI-A-0"
+                ;;
+            "DisplayPort-0")
+                ${configFolder}/script/DisplayPort_only
+                primaryMonitor="eDP"
+                ;;
+        esac
+        ;;
+    3)
+        ${configFolder}/script/all
+        primaryMonitor="HDMI-A-0"
+        ;;
+esac
+
+${configFolder}/script/remove_desktop
+
+${configFolder}/script/set_primary ${primaryMonitor}

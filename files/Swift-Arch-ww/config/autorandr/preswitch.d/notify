@@ -1,0 +1,3 @@
+#!/bin/bash
+
+dunstify -a autorandr -i video-display-symbolic.symbolic "$(echo -e "Switching to Profile: ${AUTORANDR_CURRENT_PROFILE}\nMonitors: ${AUTORANDR_MONITORS}")"

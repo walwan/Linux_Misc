@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# set wallpaper
+feh --no-fehbg --bg-fill /usr/share/pixmaps/wallpaper
