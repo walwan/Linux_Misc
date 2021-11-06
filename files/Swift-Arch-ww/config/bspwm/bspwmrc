@@ -2,6 +2,8 @@
 
 # assign all ten monitors to eDP (laptop's screen)
 bspc monitor eDP -d I II III IV V VI VII VIII IX X
+# auto config monitors
+autorandr -c
 
 bspc config border_width        2
 bspc config window_gap          8
