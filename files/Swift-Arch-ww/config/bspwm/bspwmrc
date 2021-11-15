@@ -34,5 +34,8 @@ $HOME/.config/polybar/launch.sh
 # XDG autostart
 systemctl --user start autostart.target
 
+# aa-notify
+/usr/bin/aa-notify -p -s 1 -f /var/log/audit/audit.log
+
 # wireless auto-connection
 $HOME/WW/Misc/nmgui/nmgui connect
