@@ -12,6 +12,8 @@ alias du1='du -h --max-depth=1'
 
 # Personal aliases
 alias v='nvim'
+alias R='source ranger'
+alias o='xdg-open'
 
 alias restronedrive='systemctl --user restart onedrive'
 alias stoponedrive='systemctl --user stop onedrive'
