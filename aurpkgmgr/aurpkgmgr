@@ -128,6 +128,11 @@ _cleanOldPkg(){
 
     for folder in `ls ${AURPkgDir}`; do
         if test -d "${AURPkgDir}/${folder}"; then
+            # Ignore backup folder
+            if [[ ${folder} == "backup" ]] ; then
+                continue
+            fi
+
             pkgCount=()
             SubPkgName=()
 
@@ -194,6 +199,10 @@ _cleanUninstalledPkg(){
 
     for folder in `ls ${AURPkgDir}`; do
         if test -d "${AURPkgDir}/${folder}"; then
+            # Ignore backup folder
+            if [[ ${folder} == "backup" ]] ; then
+                continue
+            fi
 
             for file in `ls -t ${AURPkgDir}/${folder}`; do
                 # Check valid package
