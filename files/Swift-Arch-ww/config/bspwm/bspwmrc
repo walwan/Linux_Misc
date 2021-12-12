@@ -32,6 +32,7 @@ feh --no-fehbg --bg-fill /usr/share/pixmaps/wallpaper
 $HOME/.config/polybar/launch.sh
 
 # XDG autostart
+systemctl --user stop autostart.target
 systemctl --user start autostart.target
 
 # aa-notify
