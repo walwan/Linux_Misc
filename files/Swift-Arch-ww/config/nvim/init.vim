@@ -11,6 +11,7 @@ call plug#begin(stdpath('data') . '/plugged')
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'tpope/vim-surround'
+Plug 'jiangmiao/auto-pairs'
 
 " Initialize plugin system
 call plug#end()
