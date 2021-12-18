@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Program configuration
-AURPkgDir="${HOME}/WW/Software/AUR/" # AUR built package sync dir
+AURPkgDir="/var/cache/aur/" # AUR built package sync dir
 numPkgKeep=3 # Number of versions of package to keep
 
 # Environment variable
