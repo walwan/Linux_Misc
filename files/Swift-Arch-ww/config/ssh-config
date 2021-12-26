@@ -1,29 +1,34 @@
 Host github.com
-	User	git
-	Hostname	github.com
-	Port	22
-        IdentityFile ~/.ssh/id_ed25519
+    User	git
+    Hostname	github.com
+    Port	22
+    IdentityFile ~/.ssh/id_ed25519_github
 
 Host Termux
-	Hostname 10.10.0.212
-	Port 8022
-	User u0_a298
-	IdentityFile ~/.ssh/id_rsa_Termux
+    Hostname 10.10.0.212
+    Port 8022
+    User u0_a298
+    IdentityFile ~/.ssh/id_rsa_Termux
 
 Host caen login.engin.umich.edu
-        HostName login.engin.umich.edu
-        User walwan
-        ControlMaster auto
-        ControlPath ~/.ssh/_%r@%h:%p
-	ControlPersist 86400
+    HostName login.engin.umich.edu
+    User walwan
+    ControlMaster auto
+    ControlPath ~/.ssh/_%r@%h:%p
+    ControlPersist 86400
 
 Host eecs201
-	Hostname peritia.eecs.umich.edu
-	User walwan
-	IdentityFile ~/.ssh/id_ed25519_eecs201
+    Hostname peritia.eecs.umich.edu
+    User walwan
+    IdentityFile ~/.ssh/id_ed25519_eecs201
 
 Host gitlab.umich.edu
-        User git
-        Hostname gitlab.umich.edu
-        Port 22
-        IdentityFile ~/.ssh/id_ed25519_UM_gitlab
+    User git
+    Hostname gitlab.umich.edu
+    Port 22
+    IdentityFile ~/.ssh/id_ed25519_UM_gitlab
+
+Host ESP8266
+    Hostname ESP8266.lxd
+    User esp8266
+    IdentityFile ~/.ssh/id_ed25519_ESP8266
