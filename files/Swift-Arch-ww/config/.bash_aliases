@@ -3,7 +3,6 @@
 alias cp="cp -i"                                                # Confirm before overwriting something
 alias df='df -h'                                                # Human-readable sizes
 alias free='free -m'                                            # Show sizes in MB
-alias gitu='git add . && git commit && git push'
 
 alias lla='ls -lah'
 
@@ -12,8 +11,21 @@ alias du1='du -h --max-depth=1'
 
 # Personal aliases
 alias v='nvim'
+alias sv='sudo nvim'
 alias R='source ranger'
 alias o='xdg-open'
+
+alias gits='git status'
+alias gitss='git status -s'
+alias gitd='git diff'
+alias gitdc='git diff --cached'
+alias gitl='git log'
+alias gitsh='git show'
+alias gita='git add'
+alias gitau='git add -u'
+alias gitc='git commit'
+alias gitca='git commit -a'
+alias gitcam='git commit --amend'
 
 alias restronedrive='systemctl --user restart onedrive'
 alias stoponedrive='systemctl --user stop onedrive'
