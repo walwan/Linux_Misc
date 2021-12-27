@@ -1,0 +1,23 @@
+#!/bin/python3
+
+import os
+
+curDir = os.getcwd()
+
+if not os.path.exists(f"{curDir}/pkg.list"):
+    rst = input("File \"pkg.list\" does not exist in current folder, proceed? [y/N]")
+    if not (rst == "y" or rst == "Y"):
+        exit(0)
+
+with open(f"{curDir}/pkg.list", "w") as f:
+    for pkg in os.popen("expac --timefmt='%Y-%m-%d %T' '%l\t%w\t%n\t%v' | sort").read().split("\n"):
+        if len(pkg) > 0:
+            pkgList = pkg.split("\t")
+            f.write(f"{pkgList[0]}\t{pkgList[2]}\n\t{pkgList[1]}\t{pkgList[3]}\n\n")
+
+if not os.path.exists(f"{curDir}/flatpak_pkg.list"):
+    rst = input("File \"flatpak_pkg.list\" does not exist in current folder, proceed? [y/N]")
+    if not (rst == "y" or rst == "Y"):
+        exit(0)
+
+os.system(f"flatpak list -a --columns=name:s,application,version,branch,origin,installation,size > {curDir}/flatpak_pkg.list")
