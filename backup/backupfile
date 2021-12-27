@@ -1,0 +1,68 @@
+#!/bin/bash
+
+#scriptDir="$(cd "$(dirname "$0")" && pwd)"
+if [[ ! -r "modified_files" ]]; then
+    echo "File "modified_files" does not exist or is unreadable!"
+    exit 1
+fi
+
+IFS=$'\n' read -d '' -a modifiedFiles < modified_files
+
+# remove backup/ for deleting unneeded modified files
+rm -rf backup
+
+for file in "${modifiedFiles[@]}"; do
+    # do not process empty lines
+    if [[ -n ${file} ]]; then
+        # do not process comments
+        if [[ ${file:0:1} != "#" ]]; then
+
+            #check new create flag
+            if [[ ${file:0:1} = "+" ]]; then
+                file=${file:1} # delete first "+"
+                NEW_CREATE_FLAG=1
+            else
+                NEW_CREATE_FLAG=0
+            fi
+
+            # check existence
+            sudo stat "${file}" >/dev/null 2>&1
+            if [[ $? != 0 ]]; then
+                if [[ $NEW_CREATE_FLAG = 1 ]]; then
+                    continue
+                else
+                    echo "File: ${file} not found!"
+                    exit 1
+                fi
+            fi
+
+            echo "Backuping: ${file}"
+
+            # process homedir reference
+            if [[ ${file:0:1} = "~" ]]; then
+                #echo $(whoami)
+                absoluteFile="$(sed -E "s/^~/\/home\/$(whoami)/" <<< ${file})"
+            else
+                absoluteFile=${file}
+            fi
+
+            #echo $absoluteFile
+            backupPath="backup/${file}"
+            #echo $backupPath
+            parentDir="$(dirname "${file}")"
+            #echo $parentDir
+            backupDir="backup/${parentDir}"
+            #echo $backupDir
+
+            rm -rf "${backupPath}"
+            mkdir -p "${backupDir}"
+            sudo cp -rP "${absoluteFile}" "${backupDir}"
+
+            # process permission
+            if [[ ! -L "${backupPath}" ]]; then
+                sudo chown -hR $(whoami):$(whoami) "${backupPath}"
+                chmod -R g-rwx,o-rwx "${backupPath}"
+            fi
+        fi
+    fi
+done
