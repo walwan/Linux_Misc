@@ -1,4 +1,10 @@
-## put any X11 related config here
+# put any X11 related config here
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
+export SDL_IM_MODULE=fcitx
+
+# Fix Java apps
+export _JAVA_AWT_WM_NONREPARENTING=1
+#export AWT_TOOLKIT=MToolkit
+#wmname LG3D
