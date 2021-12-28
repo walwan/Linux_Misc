@@ -4,10 +4,10 @@ alias cp="cp -i"                                                # Confirm before
 alias df='df -h'                                                # Human-readable sizes
 alias free='free -m'                                            # Show sizes in MB
 
-alias lla='ls -lah'
+alias lat='ls -laht'
 
 alias du='du -h'
-alias du1='du -h --max-depth=1'
+alias du1='du -hd1'
 
 # Personal aliases
 alias v='nvim'
