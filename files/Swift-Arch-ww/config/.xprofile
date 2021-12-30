@@ -8,3 +8,4 @@ export SDL_IM_MODULE=fcitx
 export _JAVA_AWT_WM_NONREPARENTING=1
 #export AWT_TOOLKIT=MToolkit
 #wmname LG3D
+export JDK_JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dsun.java2d.opengl=true"
