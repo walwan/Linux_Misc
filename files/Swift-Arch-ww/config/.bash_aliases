@@ -15,6 +15,9 @@ alias sv='sudo nvim'
 alias R='source ranger'
 alias o='xdg-open'
 
+alias yay='yay --removemake'
+alias yaye='yay --removemake --editmenu'
+
 alias gits='git status'
 alias gitss='git status -s'
 alias gitd='git diff'
