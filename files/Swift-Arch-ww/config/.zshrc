@@ -144,6 +144,11 @@ if [ -e $HOME/.bash_aliases ]; then
 	source $HOME/.bash_aliases
 fi
 
+# Environment Variable
+if [ -e $HOME/.profile ]; then
+	source $HOME/.profile
+fi
+
 # Perl modules
 eval "$(perl -I$HOME/.perl/lib/perl5 -Mlocal::lib=$HOME/.perl)"
 
