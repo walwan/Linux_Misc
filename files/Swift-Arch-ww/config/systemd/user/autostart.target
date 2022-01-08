@@ -1,0 +1,7 @@
+[Unit]
+Description=XDG Autostart handler for current graphical user session
+Documentation=man:systemd.special(7)
+RefuseManualStart=no
+StopWhenUnneeded=no
+Requires=xdg-desktop-autostart.target
+After=xdg-desktop-autostart.target
