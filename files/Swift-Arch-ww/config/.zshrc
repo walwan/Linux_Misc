@@ -85,7 +85,6 @@ plugins=(git
  	man
  	sudo
  	systemd
- 	vscode
  	tmux
 	autoupdate
 	zsh-autosuggestions
