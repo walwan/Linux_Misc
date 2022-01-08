@@ -12,3 +12,6 @@ export JDK_JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -D
 
 # Set default cursor type
 xsetroot -cursor_name left_ptr
+
+# Set X server authorization
+xhost +SI:localuser:$(whoami)
