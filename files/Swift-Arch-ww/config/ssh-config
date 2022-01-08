@@ -32,3 +32,8 @@ Host ESP8266
     Hostname ESP8266.lxd
     User esp8266
     IdentityFile ~/.ssh/id_ed25519_ESP8266
+
+Host EECS311
+    Hostname EECS311.lxd
+    User eecs311
+    IdentityFile ~/.ssh/id_ed25519_EECS311
