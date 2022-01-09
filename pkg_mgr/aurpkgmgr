@@ -204,10 +204,14 @@ _cleanUninstalledPkg(){
                 continue
             fi
 
+            # Set folder empty flag
+            FolderEmpty=1
+
             for file in `ls -t ${AURPkgDir}/${folder}`; do
                 # Check valid package
                 ChkOutput=`echo ${file} | grep ".pkg.tar"`
                 if test -z ${ChkOutput}; then
+                    FolderEmpty=0
                     continue
                 fi
 
@@ -218,14 +222,21 @@ _cleanUninstalledPkg(){
                 if test "${InstalledPkgName}" != "${PkgName}"; then
                     pkgCleanPath[${numPkgClean}]="${AURPkgDir}/${folder}/${file}"
                     ((numPkgClean++))
+                else
+                    FolderEmpty=0
                 fi
 
             done
+
+            if [[ ${FolderEmpty} == 1 ]]; then
+                pkgCleanPath[${numPkgClean}]="${AURPkgDir}/${folder}"
+                ((numPkgClean++))
+            fi
         fi
     done
 
     # Output results
-    printf "%d package(s) to be cleaned:\n" ${numPkgClean}
+    printf "%d package(s) and/or folder(s) to be cleaned:\n" ${numPkgClean}
     if test ${numPkgClean} -gt 0; then
         OutputCnt=1
         for file in ${pkgCleanPath[@]}; do
