@@ -1,0 +1,45 @@
+#!/bin/bash
+
+show_help(){
+    echo "Usage:"
+    echo "vpn um <user_name>: connect um vpn (only um traffic go through vpn)"
+    echo "vpn um all <user_name>: connect um vpn (all traffic go through vpn)"
+}
+
+if [ $# -lt 1 ]; then
+    show_help
+fi
+
+_um(){
+    um_vpn_server="umvpn.umnet.umich.edu"
+    user_name_set=0
+
+    if [ "$1" == "all" ]; then
+        xclip -selection clipboard <<< "UMVPN-All"
+        if [ -n "$2" ]; then
+            user_name_set=1
+            user_name=$2
+        fi
+    else
+        xclip -selection clipboard <<< "UMVPN-Only"
+        if [ -n "$1" ]; then
+            user_name_set=1
+            user_name=$1
+        fi
+    fi
+
+    if [ ${user_name_set} -eq 1 ]; then
+        sudo openconnect -x "$(dirname $(which $0))"/UMVPN.xml -u ${user_name} ${um_vpn_server}
+    else
+        sudo openconnect -x "$(dirname $(which $0))"/UMVPN.xml ${um_vpn_server}
+    fi
+}
+
+case $1 in
+    "um")
+        _um ${@:2}
+        ;;
+    "-h")
+        show_help
+        ;;
+esac
