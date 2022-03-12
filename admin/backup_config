@@ -1,0 +1,96 @@
+#!/bin/bash
+
+echo -n "Backup system config files?"
+_askYesOrNo y
+if [[ $? -eq 1 ]]; then
+  #scriptDir="$(cd "$(dirname "$0")" && pwd)"
+  system_config_list_name="system_config_list"
+
+  if [[ ! -r "${system_config_list_name}" ]]; then
+      echo "File: \"${system_config_list_name}\" does not exist or is unreadable!"
+      exit 1
+  fi
+
+  IFS=$'\n' read -r -d '' -a config_files < "${system_config_list_name}"
+
+  # remove backup/ for deleting unneeded modified files
+  #rm -rf "$(find ./backup -maxdepth 1 -name "*" ! -name "home" ! -name "systemd.system")"
+  find ./backup -maxdepth 1 -mindepth 1 -name "*" ! -name "home" ! -name "systemd.system" -exec rm -rf {} \;
+
+  for file in "${config_files[@]}"; do
+      # do not process empty lines
+      if [[ -n ${file} ]]; then
+          # do not process comments
+          if [[ ${file:0:1} != "#" ]]; then
+
+              #check new create flag
+              if [[ ${file:0:1} = "+" ]]; then
+                  file=${file:1} # delete first "+"
+                  NEW_CREATE_FLAG=1
+              else
+                  NEW_CREATE_FLAG=0
+              fi
+
+              # check existence
+              if ! sudo stat "${file}" >/dev/null 2>&1; then
+                  if [[ $NEW_CREATE_FLAG = 1 ]]; then
+                      continue
+                  else
+                      echo "File: ${file} not found!"
+                      exit 1
+                  fi
+              fi
+
+              echo "Backuping: ${file}"
+
+              # process homedir reference
+              if [[ ${file:0:1} = "~" ]]; then
+                  #echo $(whoami)
+                  absoluteFile="$(sed -E "s/^~/\/home\/$(whoami)/" <<< "${file}")"
+              else
+                  absoluteFile=${file}
+              fi
+
+              #echo $absoluteFile
+              backupPath="backup/${file}"
+              #echo $backupPath
+              parentDir="$(dirname "${file}")"
+              #echo $parentDir
+              backupDir="backup/${parentDir}"
+              #echo $backupDir
+
+              rm -rf "${backupPath}"
+              mkdir -p "${backupDir}"
+              sudo cp -rP "${absoluteFile}" "${backupDir}"
+
+              # process permission
+              if [[ ! -L "${backupPath}" ]]; then
+                  sudo chown -hR "$(whoami):$(whoami)" "${backupPath}"
+                  chmod -R g-rwx,o-rwx "${backupPath}"
+              fi
+          fi
+      fi
+  done
+
+  echo "System config files backup done!"
+  echo
+fi
+
+echo -n "Backup system systemd status?"
+_askYesOrNo y
+if [[ $? -eq 1 ]]; then
+  systemctl --system list-unit-files | head -n -2 | sed -E -e "/^.*\.((auto|)mount|swap)[[:space:]]*/d" > backup/systemd.system
+
+  echo "System systemd status backup done!"
+  echo
+fi
+
+echo -n "Backup current user:$(whoami) systemd status?"
+_askYesOrNo y
+if [[ $? -eq 1 ]]; then
+  mkdir -p "backup/home/$(whoami)/"
+  systemctl --user list-unit-files | head -n -2 | sed -E -e "/^.*[[:space:]]*generated[[:space:]]*/d" > "backup/home/$(whoami)/systemd.$(whoami)"
+
+  echo "Current user:$(whoami) systemd status backup done!"
+  echo
+fi
