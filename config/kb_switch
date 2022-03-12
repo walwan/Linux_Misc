@@ -1,0 +1,11 @@
+#!/bin/bash
+
+kb_name='AT Translated Set 2 keyboard' # give keyboard name
+
+if xinput list "$kb_name" | grep -i --quiet disable; then
+    xinput enable "$kb_name"
+    echo Laptop keyboard on
+else
+    xinput disable "$kb_name"
+    echo Laptop keyboard off
+fi

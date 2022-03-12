@@ -1,0 +1,39 @@
+#!/bin/bash
+
+_askYesOrNo(){
+  # Default answer is no
+  default=0
+  defPrompt=" [y/N]"
+  if test $# -gt 0; then
+      case "${1}" in
+          "y" | "Y" | "yes" | "Yes" | "YES")
+          default=1
+          defPrompt=" [Y/n]"
+          ;;
+      esac
+  fi
+
+  read -r -p "${defPrompt}" input
+
+  if test -n "${input}"; then
+      case "${input}" in
+          "y" | "Y" | "yes" | "Yes" | "YES")
+          result=1
+          ;;
+          "n" | "N" | "no" | "No" | "NO")
+          result=0
+          ;;
+          *)
+          printf "Unexpected input! Please retry!"
+          _askYesOrNo
+          result=$?
+          ;;
+      esac
+  else
+      result=${default}
+  fi
+
+  return ${result}
+}
+
+_askYesOrNo "$@"
