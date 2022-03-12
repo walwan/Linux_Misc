@@ -2,13 +2,13 @@
 
 checkProcess(){
     if [[ $# -gt 0 ]]; then
-        echo "$(ps ux | tail -n +2 | awk '{print $11}' | grep "$1")"
+        ps ux | tail -n +2 | awk '{print $11}' | grep "$1"
     fi
 }
 
 checkConnect(){
     if [[ $# -gt 0 ]]; then
-        echo "$(nmcli d show $1 | grep "GENERAL.STATE" | grep "100 (connected)")"
+        nmcli d show "$1" | grep "GENERAL.STATE" | grep "100 (connected)"
     fi
 }
 
@@ -40,24 +40,24 @@ waitUntil(){
 }
 
 connect(){
-    if [[ $2 == "autoexit" && -n "$(checkConnect $1)" ]]; then
+    if [[ $2 == "autoexit" && -n "$(checkConnect "$1")" ]]; then
         return
     fi
 
     if [[ -z "$(checkProcess nm-applet)" ]]; then
-        nm-applet 2>&1 > /dev/null &
+        nm-applet > /dev/null 2>&1 &
     fi
 
     waitUntil start nm-applet
     sleep 5
 
     if [[ "$2" = "autoexit" ]]; then
-        nmcli device connect $1 2>&1 > /dev/null
+        nmcli device connect "$1" > /dev/null 2>&1
         sleep 10
     fi
 
     while true; do
-        if [[ -n "$(checkConnect $1)" ]]; then
+        if [[ -n "$(checkConnect "$1")" ]]; then
             break
         fi
         sleep 60
@@ -69,8 +69,8 @@ connect(){
 }
 
 edit(){
-    nm-applet 2>&1 > /dev/null &
-    nm-connection-editor 2>&1 > /dev/null &
+    nm-applet > /dev/null 2>&1 &
+    nm-connection-editor > /dev/null 2>&1 &
 
     waitUntil stop nm-connection-editor 60
 
