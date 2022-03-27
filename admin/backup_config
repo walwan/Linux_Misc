@@ -1,5 +1,17 @@
 #!/bin/bash
 
+echo "Checking current config folder and hostname match!"
+exec_parent_dir=$(cd ..; pwd | sed -E "s/.*\/([a-zA-Z0-9]*)$/\1/g")
+hostname=$(cat /etc/hostname)
+if [ "${exec_parent_dir}" != "${hostname,}" ]; then
+  echo -n "Possible wrong config folder, continue?"
+  if _askYesOrNo n; then
+    exit 1
+  fi
+else
+  echo "Config folder matches hostname!"
+fi
+
 echo -n "Backup system config files?"
 _askYesOrNo y
 if [[ $? -eq 1 ]]; then
