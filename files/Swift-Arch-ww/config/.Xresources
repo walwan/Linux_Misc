@@ -1,2 +1,0 @@
-! set xscreensaver newlogin command
-*newLoginCommand:	dm-tool switch-to-greeter

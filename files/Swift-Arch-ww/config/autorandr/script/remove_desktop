@@ -1,7 +1,0 @@
-#!/bin/bash
-
-deleteSuccess=0
-while [[ $deleteSuccess == 0 ]]; do
-    bspc desktop Desktop -r &>/dev/null
-    deleteSuccess=$?
-done

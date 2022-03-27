@@ -1,9 +1,0 @@
-[http]
-	# proxy = socks5h://127.0.0.1:7890
-	# proxy = socks5h://[phoneaddress]:7891
-[user]
-	name = ww
-	email = ww@Satellite.ww
-[core]
-	#gitProxy = /home/ww/WW/Misc/gitproxy/gitproxy
-	editor = nvim

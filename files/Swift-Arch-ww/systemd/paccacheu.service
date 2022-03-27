@@ -1,6 +1,0 @@
-[Unit]
-Description=Remove uninstalled cached package files
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/paccache -ruk0

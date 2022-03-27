@@ -1,2 +1,0 @@
-nmcli connection add type wifi con-name "MWireless" ifname wlp3s0 ssid "MWireless" -- wifi-sec.key-mgmt wpa-eap 802-1x.eap ttls 802-1x.identity "Username" 802-1x.phase2-auth mschapv2
-nmcli connection up MWireless --ask
