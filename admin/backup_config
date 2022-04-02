@@ -101,7 +101,7 @@ echo -n "Backup current user:$(whoami) systemd status?"
 _askYesOrNo y
 if [[ $? -eq 1 ]]; then
   mkdir -p "backup/home/$(whoami)/"
-  systemctl --user list-unit-files | head -n -2 | sed -E -e "/^.*[[:space:]]*generated[[:space:]]*/d" > "backup/home/$(whoami)/systemd.$(whoami)"
+  systemctl --user list-unit-files | head -n -2 | sed -E -e "/^.*[[:space:]]*(transient|generated)[[:space:]]*/d" > "backup/home/$(whoami)/systemd.$(whoami)"
 
   echo "Current user:$(whoami) systemd status backup done!"
   echo
