@@ -6,8 +6,11 @@ files=( amd-ucode.img
 	    vmlinuz-linux
 	    initramfs-linux-zen.img
 	    initramfs-linux-zen-fallback.img
-	    vmlinuz-linux-zen)
+	    vmlinuz-linux-zen
+	    initramfs-linux-lts.img
+	    initramfs-linux-lts-fallback.img
+	    vmlinuz-linux-lts)
 
-for file in ${files[@]}; do
-    chmod 600 "/boot/${file}"
+for file in "${files[@]}"; do
+    sudo chmod 600 "/boot/${file}"
 done
