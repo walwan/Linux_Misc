@@ -5,4 +5,5 @@
 -4: no need because secure boot enfored it
 5: partition table
 7: secure boot state
-8: kernel cmdline
+8: kernel cmdline + grub module cmdline
+9: grub loaded files + initrd hash (after Linux 5.17)
