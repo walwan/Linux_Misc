@@ -91,7 +91,7 @@ fi
 echo -n "Backup system systemd status?"
 _askYesOrNo y
 if [[ $? -eq 1 ]]; then
-  systemctl --system list-unit-files | head -n -2 | sed -E -e "/^.*\.((auto|)mount|swap)[[:space:]]*/d" > backup/systemd.system
+  systemctl --system list-unit-files | head -n -2 | sed -E -e "/^.*\.((auto|)mount|swap)[[:space:]]*/d" | sed -E -e "/^.*[[:space:]]*(transient|generated)[[:space:]]*/d" > backup/systemd.system
 
   echo "System systemd status backup done!"
   echo
