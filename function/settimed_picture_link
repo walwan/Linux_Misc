@@ -1,0 +1,61 @@
+#!/bin/bash
+
+perror(){
+  echo "$1"
+  exit 1
+}
+
+config="/usr/share/backgrounds/eva_poster/beach.time"
+cur_time="$(date +%H:%M)"
+
+# readin and check
+if [[ $# -gt 0 ]]; then
+  config="$1"
+fi
+
+if [[ ! -e ${config} ]]; then
+  perror "Error: config file does not exist/unaccessable!"
+fi
+
+_source="$(grep "^source:" "${config}" | sed -E "s/^source:[[:space:]]*//")"
+if [[ "$(echo "${_source}" | wc -l)" -ne 1 ]]; then
+  perror "Error: needs exactly one source line!"
+fi
+
+_target="$(grep "^target:" "${config}" | sed -E "s/^target:[[:space:]]*//")"
+if [[ "$(echo "${_target}" | wc -l)" -ne 1 ]]; then
+  perror "Error: needs exactly one target line!"
+fi
+
+IFS=$'\n' read -r -d '' -a time <<< "$(grep -E "^@[0-9]{2}:[0-9]{2}: *.*$" "${config}"  | sed -E "s/^@([0-9]{2}:[0-9]{2}): *(.*)$/\1/")"
+IFS=$'\n' read -r -d '' -a file <<< "$(grep -E "^@[0-9]{2}:[0-9]{2}: *.*$" "${config}"  | sed -E "s/^@([0-9]{2}:[0-9]{2}): *(.*)$/\2/")"
+
+if [[ ${#time[@]} -lt 1 ]]; then
+  perror "Error: no time info found!"
+fi
+
+if [[ ${#time[@]} -ne ${#file[@]} ]]; then
+  perror "Error: time stamp and file name number mismatch!"
+fi
+
+# find current time stamp slot
+slot=0
+while [[ "${time[$slot]}" < "$cur_time" ]] && [[ ${slot} < ${#time[@]} ]]; do
+  ((slot++))
+done
+
+if [[ $slot == 0 ]]; then
+  slot=${#time[@]}-1
+else
+  ((slot--))
+fi
+
+_source_file="$(echo "${_source}" | sed -E "s/%s/${file[$slot]}/")"
+
+# link picture if needed
+if [[ ! "$(readlink -m "${_target}")" == "${_source_file}" ]]; then
+  echo "Linking ${_source_file} to ${_target}!"
+  if ! ln -sf "${_source_file}" "${_target}"; then
+    perror "Error: cannot create link!"
+  fi
+fi
