@@ -2,7 +2,8 @@
 
 mountPart(){
     sudo cryptsetup open /dev/nvme0n1p2 cryptboot
-    sudo mount /dev/mapper/cryptboot /boot
+    sudo mount -o compress=zstd,subvol=/@boot /dev/mapper/cryptboot /boot
+    sudo mount -o compress=zstd,subvol=/@snapshots /dev/mapper/cryptboot /.snapshots/boot
     sudo mount /dev/nvme0n1p1 /efi
 }
 
