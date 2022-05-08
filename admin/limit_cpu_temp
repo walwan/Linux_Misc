@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if [[ $# -lt 1 ]]; then
+  echo "Please specify temperature limit!"
+  exit 1
+fi
+
+re='^[0-9]+$'
+if ! [[ $1 =~ $re ]] ; then
+   echo "Error: temperature is not an integer!" >&2
+   exit 1
+fi
+
+while true; do
+  clear
+
+  ryzenadj_info="$(sudo ryzenadj -i)"
+  echo "${ryzenadj_info}"
+
+  cur_temp_limit="$(echo "${ryzenadj_info}" | grep "THM LIMIT CORE" | sed -E "s/\| THM LIMIT CORE      \|    ([0-9]{1,3})\.000 \| tctl-temp          \|/\1/g")"
+  if [[ ! $1 == "${cur_temp_limit}" ]]; then
+    echo "Setting CPU maximum temperature to $1!"
+    if ! sudo ryzenadj -f "$1"; then
+      echo "Error: setting temperature limit failed!"
+    fi
+  fi
+
+  sleep 300
+done
