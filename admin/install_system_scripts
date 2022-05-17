@@ -1,0 +1,9 @@
+#!/bin/bash
+
+dirpath="$(cd "$(dirname "$0")" || return; pwd)"
+
+if [[ $UID == 0 ]]; then
+  install -m700 "${dirpath}/limit_cpu_temp" /usr/local/sbin
+else
+  echo "Error: Please run as root!"
+fi
