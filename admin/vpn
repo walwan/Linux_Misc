@@ -8,10 +8,11 @@ show_help(){
 
 if [ $# -lt 1 ]; then
     show_help
+    exit 0
 fi
 
 _um(){
-    um_vpn_server="umvpn.umnet.umich.edu"
+    vpn_server="umvpn.umnet.umich.edu"
     user_name_set=0
 
     if [ "$1" == "all" ]; then
@@ -29,15 +30,15 @@ _um(){
     fi
 
     if [ ${user_name_set} -eq 1 ]; then
-        sudo openconnect -x "$(dirname $(which $0))"/UMVPN.xml -u ${user_name} ${um_vpn_server}
+        sudo openconnect -x "$(dirname "$(which "$0")")/UMVPN.xml" -u "${user_name}" ${vpn_server}
     else
-        sudo openconnect -x "$(dirname $(which $0))"/UMVPN.xml ${um_vpn_server}
+        sudo openconnect -x "$(dirname "$(which "$0")")/UMVPN.xml" ${vpn_server}
     fi
 }
 
 case $1 in
     "um")
-        _um ${@:2}
+        _um "${@:2}"
         ;;
     "-h")
         show_help
