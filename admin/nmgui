@@ -2,7 +2,7 @@
 
 checkProcess(){
     if [[ $# -gt 0 ]]; then
-        ps ux | tail -n +2 | awk '{print $11}' | grep "$1"
+        ps ux | head -n -4 | awk '{print $11}' | grep "$1"
     fi
 }
 
