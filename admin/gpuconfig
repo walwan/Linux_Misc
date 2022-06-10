@@ -106,7 +106,9 @@ nvidia() {
 	unbind
 
     modprobe nvidia
-    modprobe nvidia-drm modeset=1
+    modprobe nvidia_modeset
+    modprobe nvidia_uvm
+    modprobe nvidia_drm #modeset=1
 	#echo "$GPUid" > /sys/bus/pci/drivers/nvidia/new_id
 	sleep 1
 
@@ -144,9 +146,9 @@ unbind() {
             fi
         fi
 
-        modprobe -r nvidia-uvm
-        modprobe -r nvidia-drm
-        modprobe -r nvidia-modeset
+        modprobe -r nvidia_uvm
+        modprobe -r nvidia_drm
+        modprobe -r nvidia_modeset
         modprobe -r nvidia
 
         sleep 1
