@@ -106,3 +106,12 @@ if [[ $? -eq 1 ]]; then
   echo "Current user:$(whoami) systemd status backup done!"
   echo
 fi
+
+echo -n "Backup current TPM PCR value hash?"
+_askYesOrNo y
+if [[ $? -eq 1 ]]; then
+  sudo tpm2_pcrread > "backup/pcr_hash"
+
+  echo "Current TPM PCR value hash backup done!"
+  echo
+fi
