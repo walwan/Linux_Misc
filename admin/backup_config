@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Checking current config folder and hostname match!"
-exec_parent_dir=$(cd ..; pwd | sed -E "s/.*\/([a-zA-Z0-9]*)$/\1/g")
+exec_parent_dir=$(cd ..; basename "$(pwd)")
 hostname=$(cat /etc/hostname)
 if [ "${exec_parent_dir}" != "${hostname,}" ]; then
   echo -n "Possible wrong config folder, continue?"
@@ -17,6 +17,7 @@ _askYesOrNo y
 if [[ $? -eq 1 ]]; then
   #scriptDir="$(cd "$(dirname "$0")" && pwd)"
   system_config_list_name="system_config_list"
+  system_config_backup_dir="backup/filesystem/"
 
   if [[ ! -r "${system_config_list_name}" ]]; then
       echo "File: \"${system_config_list_name}\" does not exist or is unreadable!"
@@ -26,8 +27,8 @@ if [[ $? -eq 1 ]]; then
   IFS=$'\n' read -r -d '' -a config_files < "${system_config_list_name}"
 
   # remove backup/ for deleting unneeded modified files
-  #rm -rf "$(find ./backup -maxdepth 1 -name "*" ! -name "home" ! -name "systemd.system")"
-  find ./backup -maxdepth 1 -mindepth 1 -name "*" ! -name "home" ! -name "systemd.system" -exec rm -rf {} \;
+  #find ./backup -maxdepth 1 -mindepth 1 -name "*" ! -name "home" ! -name "systemd.system" -exec rm -rf {} \;
+  rm -rf backup/filesystem
 
   for file in "${config_files[@]}"; do
       # do not process empty lines
@@ -64,11 +65,11 @@ if [[ $? -eq 1 ]]; then
               fi
 
               #echo $absoluteFile
-              backupPath="backup/${file}"
+              backupPath="${system_config_backup_dir}/${file}"
               #echo $backupPath
               parentDir="$(dirname "${file}")"
               #echo $parentDir
-              backupDir="backup/${parentDir}"
+              backupDir="${system_config_backup_dir}/${parentDir}"
               #echo $backupDir
 
               rm -rf "${backupPath}"
@@ -88,10 +89,12 @@ if [[ $? -eq 1 ]]; then
   echo
 fi
 
+other_backup_dir="backup/other/"
+
 echo -n "Backup system systemd status?"
 _askYesOrNo y
 if [[ $? -eq 1 ]]; then
-  systemctl --system list-unit-files | head -n -2 | sed -E -e "/^.*\.((auto|)mount|swap)[[:space:]]*/d" | sed -E -e "/^.*[[:space:]]*(transient|generated)[[:space:]]*/d" > backup/systemd.system
+  systemctl --system list-unit-files | head -n -2 | sed -E -e "/^.*\.((auto|)mount|swap)[[:space:]]*/d" | sed -E -e "/^.*[[:space:]]*(transient|generated)[[:space:]]*/d" > ${other_backup_dir}/systemd.system
 
   echo "System systemd status backup done!"
   echo
@@ -100,8 +103,8 @@ fi
 echo -n "Backup current user:$(whoami) systemd status?"
 _askYesOrNo y
 if [[ $? -eq 1 ]]; then
-  mkdir -p "backup/home/$(whoami)/"
-  systemctl --user list-unit-files | head -n -2 | sed -E -e "/^.*[[:space:]]*(transient|generated)[[:space:]]*/d" > "backup/home/$(whoami)/systemd.$(whoami)"
+  mkdir -p "${other_backup_dir}/$(whoami)/"
+  systemctl --user list-unit-files | head -n -2 | sed -E -e "/^.*[[:space:]]*(transient|generated)[[:space:]]*/d" > "${other_backup_dir}/$(whoami)/systemd.$(whoami)"
 
   echo "Current user:$(whoami) systemd status backup done!"
   echo
@@ -110,7 +113,7 @@ fi
 echo -n "Backup current TPM PCR value hash?"
 _askYesOrNo y
 if [[ $? -eq 1 ]]; then
-  sudo tpm2_pcrread > "backup/pcr_hash"
+  sudo tpm2_pcrread > "${other_backup_dir}/pcr_hash-$(uname --kernel-release)"
 
   echo "Current TPM PCR value hash backup done!"
   echo
