@@ -1,0 +1,33 @@
+#!/bin/bash
+
+_clear() {
+	echo -n "Wipe all TPM key slots?"
+	_askYesOrNo
+	if [[ $? -eq 1 ]]; then
+		# clear current tpm key slot
+		sudo systemd-cryptenroll /dev/nvme0n1p3 --wipe-slot=tpm2
+		sudo systemd-cryptenroll /dev/nvme1n1p1 --wipe-slot=tpm2
+	fi
+}
+
+_enroll() {
+	echo -n "Enroll current PCR value?"
+	_askYesOrNo
+	if [[ $? -eq 1 ]]; then
+		# enroll new key
+		sudo systemd-cryptenroll --tpm2-device=/dev/tpmrm0 --tpm2-pcrs=0,1,2,3,4,5,7,8,9 /dev/nvme0n1p3
+		sudo systemd-cryptenroll --tpm2-device=/dev/tpmrm0 --tpm2-pcrs=0,1,2,3,4,5,7,8,9 /dev/nvme1n1p1
+	fi
+}
+
+case $1 in
+"clear")
+	_clear
+	;;
+"enroll")
+	_enroll
+	;;
+*)
+	showHelp
+	;;
+esac

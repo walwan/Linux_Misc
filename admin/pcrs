@@ -2,7 +2,7 @@
 1: for bios settings check
 2: for hardware optional roms
 3: for roms firmware data
--4: no need because secure boot enfored it
+4: measures the boot manager and the devices to boot from
 5: partition table
 7: secure boot state
 8: kernel cmdline + grub module cmdline
