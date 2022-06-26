@@ -5,7 +5,7 @@ shopt -s nullglob
 
 # Program configuration
 AURPkgDir="/var/cache/aur/" # AUR built package sync dir
-numPkgKeep=3 # Number of versions of package to keep
+numPkgKeep=3                # Number of versions of package to keep
 
 # Environment variable
 yayAURCache="${HOME}/.cache/yay/"
@@ -24,228 +24,228 @@ readonly cmdCleanPkg
 cmdChkDynPkgVer="chkdynpkgver"
 readonly cmdChkDynPkgVer
 
-cmdList=(   "${cmdSyncPkg}"
-            "${cmdCleanPkg}"
-            "${cmdChkDynPkgVer}")
+cmdList=("${cmdSyncPkg}"
+	"${cmdCleanPkg}"
+	"${cmdChkDynPkgVer}")
 readonly cmdList
 
-_processArg(){
-    # Process arguments
-    if test $# -eq 0; then
-        _showHelp
-    else
-        if test "${1}" = ${cmdSyncPkg}; then
-            _syncPkg
-        elif test "${1}" = ${cmdCleanPkg}; then
-            _cleanPkg
-        elif test "${1}" = ${cmdChkDynPkgVer}; then
-            _chkDynPkgVer
-        else
-            _showHelp
-        fi
-    fi
+_processArg() {
+	# Process arguments
+	if test $# -eq 0; then
+		_showHelp
+	else
+		if test "${1}" = ${cmdSyncPkg}; then
+			_syncPkg
+		elif test "${1}" = ${cmdCleanPkg}; then
+			_cleanPkg
+		elif test "${1}" = ${cmdChkDynPkgVer}; then
+			_chkDynPkgVer
+		else
+			_showHelp
+		fi
+	fi
 }
 
-_showHelp(){
-    printf "Usage: %s " ${scriptName}
+_showHelp() {
+	printf "Usage: %s " ${scriptName}
 
-    cmdCnt=0
-    printf "<"
-    for cmd in "${cmdList[@]}"; do
-        printf "%s" "${cmd}"
-        ((cmdCnt++))
-        if test "${cmdCnt}" -lt ${#cmdList[@]}; then
-            printf "/"
-        fi
-    done
-    printf "> [options]\n"
+	cmdCnt=0
+	printf "<"
+	for cmd in "${cmdList[@]}"; do
+		printf "%s" "${cmd}"
+		((cmdCnt++))
+		if test "${cmdCnt}" -lt ${#cmdList[@]}; then
+			printf "/"
+		fi
+	done
+	printf "> [options]\n"
 }
 
-_syncPkg(){
-    for folder in "${yayAURCache}"/*; do
-        if [[ -d "${folder}" ]]; then
-            for file in "${folder}"/*.pkg.tar.zst; do
-              folder_basename=$(basename "${folder}")
-              if [[ ! -d "${AURPkgDir}/${folder_basename}" ]]; then
-                  mkdir -p "${AURPkgDir}/${folder_basename}"
-              fi
+_syncPkg() {
+	for folder in "${yayAURCache}"/*; do
+		if [[ -d "${folder}" ]]; then
+			for file in "${folder}"/*.pkg.tar.zst; do
+				folder_basename=$(basename "${folder}")
+				if [[ ! -d "${AURPkgDir}/${folder_basename}" ]]; then
+					mkdir -p "${AURPkgDir}/${folder_basename}"
+				fi
 
-              printf "Moving %s to %s\n" "${file}" "${AURPkgDir}/${folder_basename}/"
+				printf "Moving %s to %s\n" "${file}" "${AURPkgDir}/${folder_basename}/"
 
-              newFilePath="${AURPkgDir}/${folder_basename}/$(basename "${file}")"
-              #echo ${newFilePath}
-              if test -e "${newFilePath}"; then
-                  printf "The target file :\"%s\" already exists, overwride?" "${newFilePath}"
-                  _askYesOrNo
-                  if test $? -eq 0; then
-                      continue
-                  fi
-              fi
-              mv "${file}" "${AURPkgDir}/${folder_basename}"
-            done
-        fi
-    done
+				newFilePath="${AURPkgDir}/${folder_basename}/$(basename "${file}")"
+				#echo ${newFilePath}
+				if test -e "${newFilePath}"; then
+					printf "The target file :\"%s\" already exists, overwride?" "${newFilePath}"
+					_askYesOrNo
+					if test $? -eq 0; then
+						continue
+					fi
+				fi
+				mv "${file}" "${AURPkgDir}/${folder_basename}"
+			done
+		fi
+	done
 }
 
-_cleanOldPkg(){
-    # Initialize variable
-    numPkgClean=0
-    pkgCleanPath=()
-    declare -A PkgTable
+_cleanOldPkg() {
+	# Initialize variable
+	numPkgClean=0
+	pkgCleanPath=()
+	declare -A PkgTable
 
-    for folder in "${AURPkgDir}"/*; do
-        if test -d "${folder}"; then
-            # Ignore backup folder
-            if [[ $(basename "${folder}") == "backup" ]] ; then
-                continue
-            fi
+	for folder in "${AURPkgDir}"/*; do
+		if test -d "${folder}"; then
+			# Ignore backup folder
+			if [[ $(basename "${folder}") == "backup" ]]; then
+				continue
+			fi
 
-            for file in $(ls -t "${folder}"); do
-                # Check valid package
-                ChkOutput=$(echo "${file}" | grep ".pkg.tar")
-                if test -z "${ChkOutput}"; then
-                    continue
-                fi
+			for file in $(ls -t "${folder}"); do
+				# Check valid package
+				ChkOutput=$(echo "${file}" | grep ".pkg.tar")
+				if test -z "${ChkOutput}"; then
+					continue
+				fi
 
-                # Parsing package name
-                PkgName=$(LC_ALL=en pacman -Qp "${folder}/${file}" | sed "s/[[:space:]].*$//g")
-                if [[ -n ${PkgTable[${PkgName}]} ]]; then
-                  ((PkgTable[${PkgName}]++))
-                  #echo "${PkgName}: ${PkgTable[${PkgName}]}"
-                else
-                  PkgTable[${PkgName}]=1
-                fi
+				# Parsing package name
+				PkgName=$(LC_ALL=en pacman -Qp "${folder}/${file}" | sed "s/[[:space:]].*$//g")
+				if [[ -n ${PkgTable[${PkgName}]} ]]; then
+					((PkgTable[${PkgName}]++))
+					#echo "${PkgName}: ${PkgTable[${PkgName}]}"
+				else
+					PkgTable[${PkgName}]=1
+				fi
 
-                # Check package count
-                if [[ ${PkgTable[${PkgName}]} -gt ${numPkgKeep} ]]; then
-                    pkgCleanPath[${numPkgClean}]="${folder}/${file}"
-                    ((numPkgClean++))
-                fi
-            done
-        fi
-    done
+				# Check package count
+				if [[ ${PkgTable[${PkgName}]} -gt ${numPkgKeep} ]]; then
+					pkgCleanPath[${numPkgClean}]="${folder}/${file}"
+					((numPkgClean++))
+				fi
+			done
+		fi
+	done
 
-    # Output results
-    printf "%d package(s) to be cleaned:\n" "${numPkgClean}"
-    if test "${numPkgClean}" -gt 0; then
-        OutputCnt=1
-        for file in "${pkgCleanPath[@]}"; do
-            printf "%d: %s\n" ${OutputCnt} "${file}"
-            ((OutputCnt++))
-        done
+	# Output results
+	printf "%d package(s) to be cleaned:\n" "${numPkgClean}"
+	if test "${numPkgClean}" -gt 0; then
+		OutputCnt=1
+		for file in "${pkgCleanPath[@]}"; do
+			printf "%d: %s\n" ${OutputCnt} "${file}"
+			((OutputCnt++))
+		done
 
-        printf "Start Cleaning?"
-        _askYesOrNo
-        if test $? -eq 1; then
-            for file in "${pkgCleanPath[@]}"; do
-                rm -r "${file}"
-            done
-            printf "Done Cleaning!\n"
-        fi
-    fi
+		printf "Start Cleaning?"
+		_askYesOrNo
+		if test $? -eq 1; then
+			for file in "${pkgCleanPath[@]}"; do
+				rm -r "${file}"
+			done
+			printf "Done Cleaning!\n"
+		fi
+	fi
 }
 
-_cleanUninstalledPkg(){
-    # Initialize variable
-    numPkgClean=0
-    pkgCleanPath=()
+_cleanUninstalledPkg() {
+	# Initialize variable
+	numPkgClean=0
+	pkgCleanPath=()
 
-    for folder in "${AURPkgDir}"/*; do
-        if test -d "${folder}"; then
-            # Ignore backup folder
-            if [[ $(basename "${folder}") == "backup" ]] ; then
-                continue
-            fi
+	for folder in "${AURPkgDir}"/*; do
+		if test -d "${folder}"; then
+			# Ignore backup folder
+			if [[ $(basename "${folder}") == "backup" ]]; then
+				continue
+			fi
 
-            # Set folder empty flag
-            FolderEmpty=1
+			# Set folder empty flag
+			FolderEmpty=1
 
-            for file in $(ls -t "${folder}"); do
-                # Check valid package
-                ChkOutput=$(echo "${file}" | grep ".pkg.tar")
-                if test -z "${ChkOutput}"; then
-                    FolderEmpty=0
-                    continue
-                fi
+			for file in $(ls -t "${folder}"); do
+				# Check valid package
+				ChkOutput=$(echo "${file}" | grep ".pkg.tar")
+				if test -z "${ChkOutput}"; then
+					FolderEmpty=0
+					continue
+				fi
 
-                # Parsing package name
-                PkgName=$(LC_ALL=en pacman -Qp "${folder}/${file}" | sed "s/[[:space:]].*$//g" )
-                InstalledPkgName=$(LC_ALL=en pacman -Q "${PkgName}" 2>&1 | sed "s/[[:space:]].*$//g")
+				# Parsing package name
+				PkgName=$(LC_ALL=en pacman -Qp "${folder}/${file}" | sed "s/[[:space:]].*$//g")
+				InstalledPkgName=$(LC_ALL=en pacman -Q "${PkgName}" 2>&1 | sed "s/[[:space:]].*$//g")
 
-                if [[ "${InstalledPkgName}" != "${PkgName}" ]]; then
-                    pkgCleanPath[${numPkgClean}]="${folder}/${file}"
-                    ((numPkgClean++))
-                else
-                    FolderEmpty=0
-                fi
+				if [[ "${InstalledPkgName}" != "${PkgName}" ]]; then
+					pkgCleanPath[${numPkgClean}]="${folder}/${file}"
+					((numPkgClean++))
+				else
+					FolderEmpty=0
+				fi
 
-            done
+			done
 
-            if [[ ${FolderEmpty} == 1 ]]; then
-                pkgCleanPath[${numPkgClean}]="${folder}"
-                ((numPkgClean++))
-            fi
-        fi
-    done
+			if [[ ${FolderEmpty} == 1 ]]; then
+				pkgCleanPath[${numPkgClean}]="${folder}"
+				((numPkgClean++))
+			fi
+		fi
+	done
 
-    # Output results
-    printf "%d package(s) and/or folder(s) to be cleaned:\n" "${numPkgClean}"
-    if test "${numPkgClean}" -gt 0; then
-        OutputCnt=1
-        for file in "${pkgCleanPath[@]}"; do
-            printf "%d: %s\n" "${OutputCnt}" "${file}"
-            ((OutputCnt++))
-        done
+	# Output results
+	printf "%d package(s) and/or folder(s) to be cleaned:\n" "${numPkgClean}"
+	if test "${numPkgClean}" -gt 0; then
+		OutputCnt=1
+		for file in "${pkgCleanPath[@]}"; do
+			printf "%d: %s\n" "${OutputCnt}" "${file}"
+			((OutputCnt++))
+		done
 
-        printf "Start Cleaning?"
-        _askYesOrNo
-        if test $? -eq 1; then
-            for file in "${pkgCleanPath[@]}"; do
-                rm -r "${file}"
-            done
-            printf "Done Cleaning!\n"
-        fi
-    fi
+		printf "Start Cleaning?"
+		_askYesOrNo
+		if test $? -eq 1; then
+			for file in "${pkgCleanPath[@]}"; do
+				rm -r "${file}"
+			done
+			printf "Done Cleaning!\n"
+		fi
+	fi
 }
 
-_cleanPkg(){
-    printf "Clean uninstalled packages?"
-    _askYesOrNo
-    if test $? -eq 1; then
-        _cleanUninstalledPkg
-    fi
+_cleanPkg() {
+	printf "Clean uninstalled packages?"
+	_askYesOrNo
+	if test $? -eq 1; then
+		_cleanUninstalledPkg
+	fi
 
-    printf "Clean old packages?"
-    _askYesOrNo
-    if test $? -eq 1; then
-        _cleanOldPkg
-    fi
+	printf "Clean old packages?"
+	_askYesOrNo
+	if test $? -eq 1; then
+		_cleanOldPkg
+	fi
 }
 
-_chkDynPkgVer(){
-    # Initialize variable
-    numDynVerPkg=0
-    dynVerPkgName=()
+_chkDynPkgVer() {
+	# Initialize variable
+	numDynVerPkg=0
+	dynVerPkgName=()
 
-    for PKGBUILDFile in "${yayAURCache}"/*/PKGBUILD; do
-        tempStr=$(grep "pkgver()" < "${PKGBUILDFile}")
+	for PKGBUILDFile in "${yayAURCache}"/*/PKGBUILD; do
+		tempStr=$(grep "pkgver()" <"${PKGBUILDFile}")
 
-        if test -n "${tempStr}"; then
-            dynVerPkgName[${numDynVerPkg}]=$(echo "${PKGBUILDFile}" | sed "s/\/PKGBUILD//g" | sed "s/^.*\/\///g")
-            ((numDynVerPkg++))
-        fi
-    done
+		if test -n "${tempStr}"; then
+			dynVerPkgName[${numDynVerPkg}]=$(echo "${PKGBUILDFile}" | sed "s/\/PKGBUILD//g" | sed "s/^.*\/\///g")
+			((numDynVerPkg++))
+		fi
+	done
 
-    # Output results
-    printf "%d package(s) has dynamic versioning:\n" "${numDynVerPkg}"
-    if test "${numDynVerPkg}" -gt 0; then
-        pkgCnt=1
+	# Output results
+	printf "%d package(s) has dynamic versioning:\n" "${numDynVerPkg}"
+	if test "${numDynVerPkg}" -gt 0; then
+		pkgCnt=1
 
-        for pkgName in "${dynVerPkgName[@]}"; do
-            printf "%d: %s\n" "${pkgCnt}" "${pkgName}"
-            ((pkgCnt++))
-        done
-    fi
+		for pkgName in "${dynVerPkgName[@]}"; do
+			printf "%d: %s\n" "${pkgCnt}" "${pkgName}"
+			((pkgCnt++))
+		done
+	fi
 }
 
 _processArg "$@"
