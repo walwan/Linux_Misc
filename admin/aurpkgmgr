@@ -64,7 +64,7 @@ _showHelp() {
 _syncPkg() {
 	for folder in "${yayAURCache}"/*; do
 		if [[ -d "${folder}" ]]; then
-			for file in "${folder}"/*.pkg.tar.zst; do
+			for file in "${folder}"/*.pkg.tar*; do
 				folder_basename=$(basename "${folder}")
 				if [[ ! -d "${AURPkgDir}/${folder_basename}" ]]; then
 					mkdir -p "${AURPkgDir}/${folder_basename}"
