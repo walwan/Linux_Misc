@@ -64,7 +64,7 @@ _showHelp() {
 _syncPkg() {
 	for folder in "${yayAURCache}"/*; do
 		if [[ -d "${folder}" ]]; then
-			for file in "${folder}"/*.pkg.tar*; do
+			for file in "${folder}"/*.pkg.tar.zst; do
 				folder_basename=$(basename "${folder}")
 				if [[ ! -d "${AURPkgDir}/${folder_basename}" ]]; then
 					mkdir -p "${AURPkgDir}/${folder_basename}"
@@ -102,7 +102,7 @@ _cleanOldPkg() {
 
 			for file in $(ls -t "${folder}"); do
 				# Check valid package
-				ChkOutput=$(echo "${file}" | grep ".pkg.tar")
+				ChkOutput=$(echo "${file}" | grep "\.pkg\.tar")
 				if test -z "${ChkOutput}"; then
 					continue
 				fi
@@ -162,7 +162,7 @@ _cleanUninstalledPkg() {
 
 			for file in $(ls -t "${folder}"); do
 				# Check valid package
-				ChkOutput=$(echo "${file}" | grep ".pkg.tar")
+				ChkOutput=$(echo "${file}" | grep "\.pkg\.tar")
 				if test -z "${ChkOutput}"; then
 					FolderEmpty=0
 					continue
