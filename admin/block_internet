@@ -1,0 +1,63 @@
+#!/bin/bash
+
+_set() {
+  echo "[-] Adding filter rules!"
+  sudo iptables -I OUTPUT 1 -j DROP
+  sudo iptables -I OUTPUT 1 -p UDP --dport 53 -j ACCEPT
+  sudo iptables -I OUTPUT 1 -m owner --gid-owner internet --suppl-groups -j ACCEPT
+  sudo ip6tables -I OUTPUT 1 -j DROP
+  sudo ip6tables -I OUTPUT 1 -p UDP --dport 53 -j ACCEPT
+  sudo ip6tables -I OUTPUT 1 -m owner --gid-owner internet --suppl-groups -j ACCEPT
+}
+
+_unset() {
+  # check connection before remove rules
+  local connectivity
+  connectivity="$(nmcli -t -f STATE general status)"
+  if [[ "${connectivity}" = *connected*site* ]]; then
+    echo -n "[!] Current connectivity (${connectivity}) indicates active connection, proceed to remove filter rules?"
+    _askYesOrNo
+    if [[ ! $? -eq 1 ]]; then
+      exit 0
+    fi
+  fi
+
+  echo "[-] Removing filter rules!"
+  sudo iptables -D OUTPUT -m owner --gid-owner internet --suppl-groups -j ACCEPT
+  sudo iptables -D OUTPUT -p UDP --dport 53 -j ACCEPT
+  sudo iptables -D OUTPUT -j DROP
+  sudo ip6tables -D OUTPUT -m owner --gid-owner internet --suppl-groups -j ACCEPT
+  sudo ip6tables -D OUTPUT -p UDP --dport 53 -j ACCEPT
+  sudo ip6tables -D OUTPUT -j DROP
+}
+
+_status() {
+  echo "[-] OUTPUT chain for IPv4:"
+  sudo iptables -L OUTPUT
+  echo "[-] OUTPUT chain for IPv6:"
+  sudo ip6tables -L OUTPUT
+}
+
+_run() {
+  echo "[-] Run $* as internet group!"
+  sg internet -c "$*"
+}
+
+case $1 in
+  "set")
+    _set
+    ;;
+  "unset")
+    _unset
+    ;;
+  "status")
+    _status
+    ;;
+  "run")
+    shift
+    _run "$@"
+    ;;
+  *)
+    showHelp
+    ;;
+esac
